@@ -8,40 +8,22 @@ struct Node{
 	struct Node *right;
 }*root;
 
-// Prototypes of all the functions used
+// Prototypes of all the functions
 struct Node *createNode(int);
-void displayTree();
+int displayTree(struct Node *);   // Not complete
 int attach(struct Node *);
 void search(int);
+void menuSystem();
 
 int main()
  {
- 	int val, ch;
- 	A:
- 		system("cls");  // clear screen alternative for clrscr()
- 		printf("MENU : \n\n 1. Insert element\n 2. Search element\n  choice : ");  // Menu
- 		scanf("%d", &ch);
- 		switch(ch){
- 			case 1 : {  // the case where the user chooses to insert an element
- 				system("cls");
- 				printf("Enter the element to be inserted : ");
- 				scanf("%d", &val);
- 				attach(createNode(val));
- 				printf("\nElement attached..");
- 				getch();
-				goto A;
-			 }
-			 case 2: {  // The case where the user chooses to search for an element
-			 	system("cls");
-			 	printf("Enter the element to be searched : ");
-			 	scanf("%d", &val);
-			 	search(val);
-			 	getch();
-				goto A;
-			 }
-			 default : printf("\nEnter a valid choice! "); getch(); goto A;  // Validation
-		 }
- 	
+// 	menuSystem();
+	int arr[] = {40, 20, 45, 2, 50, 30, 90};
+	int i;
+	for(i=0;i<sizeof(arr)/4;i++){
+		attach(createNode(arr[i]));
+	}
+	displayTree(root);
  	return 0;
  }
  
@@ -120,24 +102,50 @@ void search(int data){
 	 }
  }
  
-void displayTree(){
+int displayTree(struct Node *rootRef){
 	/*
-		Incomplete. Come back later.
+		Function to traverse through the tree using 
+		a simple DFS algorithm and print all the nodes.
 	*/
-	if(root == NULL){
-		printf("Tree empty!");
+	if(rootRef != NULL){
+		printf("%d ", rootRef->data);
+		displayTree(rootRef->left);
+		displayTree(rootRef->right);
 	}
-	else{
-		struct Node *parent = root;
-		while(1){
-			if(parent==NULL){
-				printf("***\n");
-				break;
+}
+
+void menuSystem(){
+	int val;
+ 	char ch;
+ 	A:
+ 		system("cls");  // clear screen alternative for clrscr()
+ 		printf("MENU : \n\n 1. Insert element\n 2. Search element\n 3. Display tree\n 4. Exit\n  choice : ");  // Menu
+ 		scanf("%c", &ch);
+ 		switch(ch){
+ 			case '1': {  // the case where the user chooses to insert an element
+ 				system("cls");
+ 				printf("Enter the element to be inserted : ");
+ 				scanf("%d", &val);
+ 				attach(createNode(val));
+ 				printf("\nElement attached..");
+ 				getch();
+				goto A;
 			}
-			else{
-				printf("%d\t", parent->data);
-				parent = parent->right;
+			case '2': {  // The case where the user chooses to search for an element
+			 	system("cls");
+			 	printf("Enter the element to be searched : ");
+			 	scanf("%d", &val);
+			 	search(val);
+			 	getch();
+				goto A;
 			}
+			case '3': {
+				system("cls"); 
+				displayTree(root); 
+				getch(); 
+				goto A;
+			}
+			case '4': exit(0);
+			default : printf("\nEnter a valid choice! "); getch(); goto A;  // Validation
 		}
-	}
 }
